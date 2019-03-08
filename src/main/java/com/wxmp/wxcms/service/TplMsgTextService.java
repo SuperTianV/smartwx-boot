@@ -42,4 +42,7 @@ public interface TplMsgTextService {
 	
 	//根据用户发送的文本消息，随机获取一条文本消息
 	public TplMsgText getByBaseId(String baseid);
+
+	public TplMsgText getByTplId(String tplId);
+
 }

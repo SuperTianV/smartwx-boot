@@ -43,4 +43,7 @@ public interface TplMsgTextDao {
 	public void delete(TplMsgText entity);
 
 	public TplMsgText getByBaseId(String baseid);
+
+	public TplMsgText getByTplId(String baseid);
+
 }

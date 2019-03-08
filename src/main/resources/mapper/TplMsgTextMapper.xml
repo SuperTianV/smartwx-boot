@@ -52,4 +52,7 @@
 	<select id="getByBaseId" parameterType="java.lang.String" resultType="com.wxmp.wxcms.domain.TplMsgText">
 		SELECT * FROM wxcms_tpl_msg_text WHERE base_id = #{baseid}
 	</select>
+	<select id="getByTplId" parameterType="java.lang.String" resultType="com.wxmp.wxcms.domain.TplMsgText">
+		SELECT * FROM wxcms_tpl_msg_text WHERE tpl_id = #{tplId}
+	</select>
 </mapper>

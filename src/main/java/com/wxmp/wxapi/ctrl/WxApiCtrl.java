@@ -18,6 +18,7 @@
  */
 package com.wxmp.wxapi.ctrl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wxmp.core.common.BaseCtrl;
 import com.wxmp.core.exception.WxErrorException;
@@ -30,8 +31,10 @@ import com.wxmp.wxapi.vo.*;
 import com.wxmp.wxcms.domain.AccountFans;
 import com.wxmp.wxcms.domain.MsgNews;
 import com.wxmp.wxcms.domain.MsgText;
+import com.wxmp.wxcms.domain.TplMsgText;
 import com.wxmp.wxcms.service.MsgNewsService;
 import com.wxmp.wxcms.service.MsgTextService;
+import com.wxmp.wxcms.service.TplMsgTextService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -58,6 +61,8 @@ public class WxApiCtrl extends BaseCtrl {
 	@Resource
 	private MsgTextService msgTextService;
 	@Resource
+	private TplMsgTextService tplMsgTextService;
+	@Resource
 	private MsgNewsService msgNewsService;
 	
 	/**
@@ -76,7 +81,7 @@ public class WxApiCtrl extends BaseCtrl {
         while(iterator.hasNext()){  
             //如果存在，则调用next实现迭代  
             String key=iterator.next();
-			log.info("key: " + key + " value: " + request.getParameterMap().get(key));
+			log.info("key: " + key + " value: " + request.getParameterMap().get(key).toString());
         }
 		
 		
@@ -92,7 +97,10 @@ public class WxApiCtrl extends BaseCtrl {
 			if (SignUtil.validSign(signature, token, timestamp, nonce)) {
 				return echostr;
 			}
+			log.info("+++++++++++++++++++++++++++" + "success" + "+++++++++++++++++++++++++++++");
+
 		}
+		log.info("+++++++++++++++++++++++++++" + "error" + "+++++++++++++++++++++++++++++");
 		return "error";
 	}
 	
@@ -332,23 +340,26 @@ public class WxApiCtrl extends BaseCtrl {
 	 */
 	@RequestMapping(value = "/sendTemplateMessage", method = RequestMethod.POST)
 	@ResponseBody
-	public AjaxResult sendTemplateMessage(String openIds) throws WxErrorException {
+	public AjaxResult sendTemplateMessage(String openIds,String content,String tplId,String type) throws WxErrorException {
 		MpAccount mpAccount = WxMemoryCacheClient.getMpAccount();//获取缓存中的唯一账号
 		TemplateMessage tplMsg = new TemplateMessage();
-
+		TplMsgText tplMsgText = tplMsgTextService.getById(tplId);
+		if ("1".equals(type)){
+			tplMsgText = tplMsgTextService.getByTplId(tplId);
+		}
+		String wxTplId = tplMsgText.getTplId();
 		String[] openIdArray = StringUtils.split(openIds, ",");
 		for (String openId : openIdArray) {
 			tplMsg.setOpenid(openId);
 			//微信公众号号的template id，开发者自行处理参数
-			tplMsg.setTemplateId("azx4q5sQjWUk1O3QY0MJSJkwePQmjR-T5rCyjyMUw8U");
-
-			tplMsg.setUrl("https://www.smartwx.info");
-			Map<String, String> dataMap = new HashMap<String, String>();
-			dataMap.put("first", "smartadmin管理后台已经上线，欢迎吐槽");
+			tplMsg.setTemplateId(wxTplId);
+			tplMsg.setUrl("http://ai-moniter.innovationai.cn/wxapi/wxipay_noity");
+			Map<String, String> dataMap = (Map<String, String>) JSON.parse(content);
+			/*dataMap.put("first", "smartadmin管理后台已经上线，欢迎吐槽");
 			dataMap.put("keyword1", "时间：" + DateUtil.changeDateTOStr(new Date()));
 			dataMap.put("keyword2", "码云平台地址：https://gitee.com/qingfengtaizi/wxmp");
 			dataMap.put("keyword3", "github平台地址：https://github.com/qingfengtaizi/wxmp-web");
-			dataMap.put("remark", "我们期待您的加入");
+			dataMap.put("remark", "我们期待您的加入");*/
 			tplMsg.setDataMap(dataMap);
 
 			JSONObject result = WxApiClient.sendTemplateMessage(tplMsg, mpAccount);

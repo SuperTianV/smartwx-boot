@@ -88,4 +88,8 @@ public class TplMsgTextServiceImpl implements TplMsgTextService {
 	public TplMsgText getByBaseId(String baseid) {
 		return entityDao.getByBaseId(baseid);
 	}
+	@Override
+	public TplMsgText getByTplId(String baseid) {
+		return entityDao.getByTplId(baseid);
+	}
 }
