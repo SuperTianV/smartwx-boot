@@ -353,7 +353,7 @@ public class WxApiCtrl extends BaseCtrl {
 			tplMsg.setOpenid(openId);
 			//微信公众号号的template id，开发者自行处理参数
 			tplMsg.setTemplateId(wxTplId);
-			tplMsg.setUrl("http://ai-moniter.innovationai.cn/wxapi/wxipay_noity");
+//			tplMsg.setUrl("http://ai-moniter.innovationai.cn/wxapi/wxipay_noity");
 			Map<String, String> dataMap = (Map<String, String>) JSON.parse(content);
 			/*dataMap.put("first", "smartadmin管理后台已经上线，欢迎吐槽");
 			dataMap.put("keyword1", "时间：" + DateUtil.changeDateTOStr(new Date()));
