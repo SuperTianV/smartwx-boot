@@ -33,7 +33,9 @@ public interface AccountFansDao {
 	public AccountFans getById(String id);
 
 	public AccountFans getByOpenId(String openId);
-	
+
+	public AccountFans getByUnionId(String openId);
+
 	public List<AccountFans> list(AccountFans searchEntity);
 
 	public Integer getTotalItemsCount(AccountFans searchEntity);

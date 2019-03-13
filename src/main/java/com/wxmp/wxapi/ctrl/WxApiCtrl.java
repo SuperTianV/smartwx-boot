@@ -18,6 +18,7 @@
  */
 package com.wxmp.wxapi.ctrl;
 
+import com.alibaba.druid.util.Utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wxmp.core.common.BaseCtrl;
@@ -340,7 +341,7 @@ public class WxApiCtrl extends BaseCtrl {
 	 */
 	@RequestMapping(value = "/sendTemplateMessage", method = RequestMethod.POST)
 	@ResponseBody
-	public AjaxResult sendTemplateMessage(String openIds,String content,String tplId,String type) throws WxErrorException {
+	public AjaxResult sendTemplateMessage(String openIds,String content,String tplId,String type,String unionIds) throws WxErrorException {
 		MpAccount mpAccount = WxMemoryCacheClient.getMpAccount();//获取缓存中的唯一账号
 		TemplateMessage tplMsg = new TemplateMessage();
 		TplMsgText tplMsgText = tplMsgTextService.getById(tplId);
@@ -348,23 +349,38 @@ public class WxApiCtrl extends BaseCtrl {
 			tplMsgText = tplMsgTextService.getByTplId(tplId);
 		}
 		String wxTplId = tplMsgText.getTplId();
-		String[] openIdArray = StringUtils.split(openIds, ",");
-		for (String openId : openIdArray) {
-			tplMsg.setOpenid(openId);
-			//微信公众号号的template id，开发者自行处理参数
-			tplMsg.setTemplateId(wxTplId);
+		if (StringUtils.isNotBlank(openIds)){
+			String[] openIdArray = StringUtils.split(openIds, ",");
+			for ( int i = 0 ; i < openIdArray.length ; i ++) {
+				String openId = openIdArray[i];
+				tplMsg.setOpenid(openId);
+				//微信公众号号的template id，开发者自行处理参数
+				tplMsg.setTemplateId(wxTplId);
 //			tplMsg.setUrl("http://ai-moniter.innovationai.cn/wxapi/wxipay_noity");
-			Map<String, String> dataMap = (Map<String, String>) JSON.parse(content);
+				Map<String, String> dataMap = (Map<String, String>) JSON.parse(content);
 			/*dataMap.put("first", "smartadmin管理后台已经上线，欢迎吐槽");
 			dataMap.put("keyword1", "时间：" + DateUtil.changeDateTOStr(new Date()));
 			dataMap.put("keyword2", "码云平台地址：https://gitee.com/qingfengtaizi/wxmp");
 			dataMap.put("keyword3", "github平台地址：https://github.com/qingfengtaizi/wxmp-web");
 			dataMap.put("remark", "我们期待您的加入");*/
-			tplMsg.setDataMap(dataMap);
-
-			JSONObject result = WxApiClient.sendTemplateMessage(tplMsg, mpAccount);
+				tplMsg.setDataMap(dataMap);
+				JSONObject result = WxApiClient.sendTemplateMessage(tplMsg, mpAccount);
+			}
 		}
-
+		if (StringUtils.isNotBlank(unionIds)){
+			String[] unionIdsArray = StringUtils.split(unionIds, ",");
+			for ( int i = 0 ; i < unionIdsArray.length ; i ++) {
+				String unionId = unionIdsArray[i];
+				AccountFans fansByUnionId = myService.getFansByUnionId(unionId);
+				String openId = fansByUnionId.getOpenId();
+				tplMsg.setOpenid(openId);
+				//微信公众号号的template id，开发者自行处理参数
+				tplMsg.setTemplateId(wxTplId);
+				Map<String, String> dataMap = (Map<String, String>) JSON.parse(content);
+				tplMsg.setDataMap(dataMap);
+				JSONObject result = WxApiClient.sendTemplateMessage(tplMsg, mpAccount);
+			}
+		}
 		return AjaxResult.success();
 	}
 	

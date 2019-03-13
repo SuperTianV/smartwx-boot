@@ -224,6 +224,9 @@ public class WxApiClient {
                 if (jsonObj.containsKey("city")) {// 用户所在城市
                     fans.setCity(jsonObj.getString("city"));
                 }
+                if (jsonObj.containsKey("unionid")) {// 开放平台unionid
+                    fans.setUnionId(jsonObj.getString("unionid"));
+                }
                 if (jsonObj.containsKey("headimgurl")) {// 用户头像
                     fans.setHeadimgurl(jsonObj.getString("headimgurl"));
                 }

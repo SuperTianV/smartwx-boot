@@ -50,6 +50,7 @@ public class AccountFans extends Page implements Serializable{
 	private String province;//省
 	private String city;//城市
 	private String headimgurl;//头像
+	private String unionId;//开放平台unionId
 	private String remark;//备注
 	private Integer status;//用户状态 1-可用；0-不可用
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
