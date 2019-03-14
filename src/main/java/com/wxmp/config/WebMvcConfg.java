@@ -62,6 +62,8 @@ public class WebMvcConfg implements WebMvcConfigurer {
         List<String> patterns = new ArrayList<>();
         patterns.add("/message/**");
         patterns.add("/front/**");
+        patterns.add("/a/**");
+
         String[] allowUrls = {"/", "/user/logout", "/user/login", "/user/register", "/wxweb/sendmsg", "/wxapi/oauthOpenid", "/views/login.html", "/common/getverifycode","/wxapi/sendTemplateMessage"};
         AuthInterceptor authInterceptor = new AuthInterceptor();
         authInterceptor.setAllowUrls(allowUrls);

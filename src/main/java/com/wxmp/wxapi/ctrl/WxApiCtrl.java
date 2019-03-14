@@ -96,9 +96,12 @@ public class WxApiCtrl extends BaseCtrl {
 			
 			// 校验成功返回  echostr，成功成为开发者；否则返回error，接入失败
 			if (SignUtil.validSign(signature, token, timestamp, nonce)) {
+				log.info("+++++++++++++++++++++++++++" + "validSignsuccess" + "+++++++++++++++++++++++++++++");
 				return echostr;
+			}else {
+				log.info("+++++++++++++++++++++++++++" + "validSignfail" + "+++++++++++++++++++++++++++++");
+//				return echostr;
 			}
-			log.info("+++++++++++++++++++++++++++" + "success" + "+++++++++++++++++++++++++++++");
 
 		}
 		log.info("+++++++++++++++++++++++++++" + "error" + "+++++++++++++++++++++++++++++");
