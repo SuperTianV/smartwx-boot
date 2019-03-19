@@ -344,22 +344,26 @@ public class WxApiCtrl extends BaseCtrl {
 	 */
 	@RequestMapping(value = "/sendTemplateMessage", method = RequestMethod.POST)
 	@ResponseBody
-	public AjaxResult sendTemplateMessage(String openIds,String content,String tplId,String type,String unionIds) throws WxErrorException {
+	public AjaxResult sendTemplateMessage(String openIds,String content,String tplId,String type,String callbackUrl,String unionIds) throws WxErrorException {
+		log.info("-------------------------------------sendTemplateMessage-----<0>-------------------【{}】，【{}】，【{}】，【{}】，【{}】",openIds,content,tplId,callbackUrl,unionIds);
 		MpAccount mpAccount = WxMemoryCacheClient.getMpAccount();//获取缓存中的唯一账号
 		TemplateMessage tplMsg = new TemplateMessage();
 		TplMsgText tplMsgText = tplMsgTextService.getById(tplId);
 		if ("1".equals(type)){
 			tplMsgText = tplMsgTextService.getByTplId(tplId);
 		}
+		if (StringUtils.isNotBlank(callbackUrl)){
+			tplMsg.setUrl(callbackUrl);
+		}
 		String wxTplId = tplMsgText.getTplId();
+		tplMsg.setTemplateId(wxTplId);
 		if (StringUtils.isNotBlank(openIds)){
 			String[] openIdArray = StringUtils.split(openIds, ",");
 			for ( int i = 0 ; i < openIdArray.length ; i ++) {
 				String openId = openIdArray[i];
 				tplMsg.setOpenid(openId);
 				//微信公众号号的template id，开发者自行处理参数
-				tplMsg.setTemplateId(wxTplId);
-//			tplMsg.setUrl("http://ai-moniter.innovationai.cn/wxapi/wxipay_noity");
+
 				Map<String, String> dataMap = (Map<String, String>) JSON.parse(content);
 			/*dataMap.put("first", "smartadmin管理后台已经上线，欢迎吐槽");
 			dataMap.put("keyword1", "时间：" + DateUtil.changeDateTOStr(new Date()));
@@ -368,6 +372,8 @@ public class WxApiCtrl extends BaseCtrl {
 			dataMap.put("remark", "我们期待您的加入");*/
 				tplMsg.setDataMap(dataMap);
 				JSONObject result = WxApiClient.sendTemplateMessage(tplMsg, mpAccount);
+				log.info("-------------------------------------result-----<2>-------------------result:"+ result.toString());
+
 			}
 		}
 		if (StringUtils.isNotBlank(unionIds)){
@@ -382,6 +388,7 @@ public class WxApiCtrl extends BaseCtrl {
 				Map<String, String> dataMap = (Map<String, String>) JSON.parse(content);
 				tplMsg.setDataMap(dataMap);
 				JSONObject result = WxApiClient.sendTemplateMessage(tplMsg, mpAccount);
+				log.info("-------------------------------------result-----<2>-------------------result:"+ result.toString());
 			}
 		}
 		return AjaxResult.success();

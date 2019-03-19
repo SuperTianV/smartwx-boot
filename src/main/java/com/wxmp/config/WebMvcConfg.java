@@ -54,11 +54,11 @@ public class WebMvcConfg implements WebMvcConfigurer {
         registration.setAsyncSupported(true);
         registration.setOrder(1);
         return registration;
-    }
+}
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        //添加登陆拦截器
+        @Override
+        public void addInterceptors(InterceptorRegistry registry) {
+            //添加登陆拦截器
         List<String> patterns = new ArrayList<>();
         patterns.add("/message/**");
         patterns.add("/front/**");
