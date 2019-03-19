@@ -60,8 +60,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 				// 前端弹出登录框
 				response.setHeader("sessionState", "notLogin");
 			} else {
-				// 跳转到登录页
-				response.sendRedirect("/views/login.html");
+				response.setStatus(404);// 跳转到登录页
+//				response.sendRedirect("/views/login.html");
 			}
 			return false;
 		}
