@@ -67,4 +67,14 @@ public class AccountFans extends Page implements Serializable{
 		}
 		return nicknameStr;
 	}
+
+	public void setNicknameStr(byte[] nickname) {
+		if(nickname != null) {
+			try {
+				this.nicknameStr = new String(nickname, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

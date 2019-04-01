@@ -203,8 +203,9 @@ public class WxApiClient {
                 }
                 if (jsonObj.containsKey("nickname")) {// 昵称
                     try {
-                        String nickname = jsonObj.getString("nickname");
-                        fans.setNickname(nickname.getBytes("UTF-8"));
+                        byte[] nickname = jsonObj.getString("nickname").getBytes("UTF-8");
+                        fans.setNickname(nickname);
+                        fans.setNicknameStr(nickname);
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }

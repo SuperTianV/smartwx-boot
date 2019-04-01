@@ -49,16 +49,16 @@
 
 	<insert id="add" parameterType="com.wxmp.wxcms.domain.AccountFans" flushCache="true"  useGeneratedKeys="true" keyProperty="id"  >
 		<![CDATA[ 
-		INSERT INTO wxcms_account_fans ( OPEN_ID,SUBSCRIBE_STATUS,SUBSCRIBE_TIME,NICK_NAME,GENDER,LANGUAGE,COUNTRY,PROVINCE,CITY,HEAD_IMG_URL,REMARK,STATUS,ID,WX_ID,ACCOUNT,CREATE_TIME )  VALUES ( #{openId},#{subscribeStatus},#{subscribeTime},#{nickname},#{gender},#{language},#{country},#{province},#{city},#{headimgurl},#{remark},#{status},#{id},#{wxid},#{account},#{createTime} )
+		INSERT INTO wxcms_account_fans ( OPEN_ID,SUBSCRIBE_STATUS,SUBSCRIBE_TIME,NICK_NAME,GENDER,LANGUAGE,COUNTRY,PROVINCE,CITY,HEAD_IMG_URL,REMARK,STATUS,ID,WX_ID,ACCOUNT,CREATE_TIME,NICK_NAME_STR )  VALUES ( #{openId},#{subscribeStatus},#{subscribeTime},#{nickname},#{gender},#{language},#{country},#{province},#{city},#{headimgurl},#{remark},#{status},#{id},#{wxid},#{account},#{createTime},#{nicknameStr} )
 		 ]]>
 	</insert>
 	
 	<insert id="addList" parameterType="list">  
-        INSERT INTO wxcms_account_fans ( OPEN_ID,SUBSCRIBE_STATUS,SUBSCRIBE_TIME,NICK_NAME,GENDER,LANGUAGE,COUNTRY,PROVINCE,CITY,HEAD_IMG_URL,REMARK,STATUS,ID,WX_ID,ACCOUNT,CREATE_TIME,UNION_ID )
+        INSERT INTO wxcms_account_fans ( OPEN_ID,SUBSCRIBE_STATUS,SUBSCRIBE_TIME,NICK_NAME,GENDER,LANGUAGE,COUNTRY,PROVINCE,CITY,HEAD_IMG_URL,REMARK,STATUS,ID,WX_ID,ACCOUNT,CREATE_TIME,UNION_ID,NICK_NAME_STR )
         VALUES
         <foreach  collection="list" item="item" index="index" separator="," >  
         	<![CDATA[
-            ( #{item.openId},#{item.subscribeStatus},#{item.subscribeTime},#{item.nickname},#{item.gender},#{item.language},#{item.country},#{item.province},#{item.city},#{item.headimgurl},#{item.remark},#{item.status},#{item.id},#{item.wxid},#{item.account},#{item.createTime},#{item.unionId} )
+            ( #{item.openId},#{item.subscribeStatus},#{item.subscribeTime},#{item.nickname},#{item.gender},#{item.language},#{item.country},#{item.province},#{item.city},#{item.headimgurl},#{item.remark},#{item.status},#{item.id},#{item.wxid},#{item.account},#{item.createTime},#{item.unionId},#{item.nicknameStr} )
         	 ]]>
         </foreach> 
     </insert>
