@@ -51,10 +51,15 @@ public class WxApiClient {
         throws WxErrorException {
         // 获取唯一的accessToken，如果是多账号，请自行处理
         AccessToken token = WxMemoryCacheClient.getAccessToken();
-        if (token != null && !token.isExpires() && WxApi.getCallbackIp(token.getAccessToken())) {// 不为空，并且没有过期
+        if (token != null && !token.isExpires()) {// 不为空，并且没有过期
+/*            if (WxApi.getCallbackIp(token.getAccessToken())){
+
+            }*/
             log.info("服务器缓存 accessToken == " + token.toString());
             return token.getAccessToken();
         } else {
+            log.info("校验accessToken不合格 【{}】", token);
+            log.info("微信接口获取accessToken == " + mpAccount.getAppid());
             token = WxApi.getAccessToken(mpAccount.getAppid(), mpAccount.getAppsecret());
             if (token != null) {
                 if (token.getErrcode() == null) {
