@@ -75,7 +75,7 @@ public class AccessToken implements Serializable{
 	 */
 	public boolean isExpires(){
 		long now = CalendarUtil.getTimeInSeconds();
-		return now - this.createTime - 10 >= this.expiresIn; //预留 10s 
+		return now - this.createTime - 120 >= this.expiresIn; //预留 120s
 	}
 	
 	/**
