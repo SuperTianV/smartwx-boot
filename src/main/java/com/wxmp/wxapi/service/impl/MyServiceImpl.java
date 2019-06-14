@@ -219,12 +219,13 @@ public class MyServiceImpl implements MyService {
 
     // 获取用户列表
     public boolean syncAccountFansList(MpAccount mpAccount) throws WxErrorException {
-        String nextOpenId = null;
-        AccountFans lastFans = fansDao.getLastOpenId();
+        //注释掉全部拉取
+       /* String nextOpenId = null;
+       AccountFans lastFans = fansDao.getLastOpenId();
         if (lastFans != null) {
             nextOpenId = lastFans.getOpenId();
-        }
-        return doSyncAccountFansList(nextOpenId, mpAccount);
+        }*/
+        return doSyncAccountFansList(null, mpAccount);
     }
 
     // 同步粉丝列表(开发者在这里可以使用递归处理)

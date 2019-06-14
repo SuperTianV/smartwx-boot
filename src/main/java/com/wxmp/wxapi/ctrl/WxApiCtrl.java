@@ -38,6 +38,7 @@ import com.wxmp.wxcms.service.MsgTextService;
 import com.wxmp.wxcms.service.TplMsgTextService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -178,8 +179,10 @@ public class WxApiCtrl extends BaseCtrl {
 	}
 	
 	//获取用户列表
+
 	@RequestMapping(value = "/syncAccountFansList")
 	@ResponseBody
+	@Scheduled(cron = "0 */10 * * * ?")
 	public AjaxResult syncAccountFansList() throws WxErrorException {
 		MpAccount mpAccount = WxMemoryCacheClient.getMpAccount();//获取缓存中的唯一账号
 		if(mpAccount != null){

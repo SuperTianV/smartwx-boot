@@ -60,7 +60,9 @@
         	<![CDATA[
             ( #{item.openId},#{item.subscribeStatus},#{item.subscribeTime},#{item.nickname},#{item.gender},#{item.language},#{item.country},#{item.province},#{item.city},#{item.headimgurl},#{item.remark},#{item.status},#{item.id},#{item.wxid},#{item.account},#{item.createTime},#{item.unionId},#{item.nicknameStr} )
         	 ]]>
-        </foreach> 
+        </foreach>
+		ON DUPLICATE KEY UPDATE
+		SUBSCRIBE_STATUS = values(SUBSCRIBE_STATUS),NICK_NAME = values(NICK_NAME),NICK_NAME_STR = values(NICK_NAME_STR),HEAD_IMG_URL = values(HEAD_IMG_URL)
     </insert>
 	
 	<update id="update" parameterType="com.wxmp.wxcms.domain.AccountFans" flushCache="true">
